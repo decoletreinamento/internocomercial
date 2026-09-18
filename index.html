@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Comercial - Decole</title>
+  
+  <!-- AQUI ESTÁ O LINK PARA O MANIFEST (Isso faz o navegador detectar) -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#071d3a">
+  <link rel="apple-touch-icon" href="fundo.png">
+
   <style>
     :root {
       --blue: #071d3a;
@@ -47,7 +53,6 @@
     }
 
     .logo-container {
-      
       padding: 16px 20px;
       border-radius: 12px;
       margin-bottom: 35px;
@@ -181,33 +186,28 @@
   </style>
 </head>
 <body>
+  <aside class="sidebar">
+    <div class="logo-container">
+      <img src="logo1.png" alt="Decole Treinamento Profissional" class="logo">
+    </div>
+    
+    <div class="sidebar-info">
+      <span class="badge-access">Acesso Restrito</span>
+      <p><strong>Portal Corporativo</strong><br>Equipe Comercial & Gestão</p>
+    </div>
+  </aside>
 
-    <body>
+  <main class="content">
+    <div class="header-tag">Plataforma Interna</div>
+    <h1 class="header-title">Central de Sistemas Comerciais</h1>
+    <p class="header-subtitle">Selecione abaixo a ferramenta que deseja acessar:</p>
 
-        <aside class="sidebar">
-          <div class="logo-container">
-            <img src="logo1.png" alt="Decole Treinamento Profissional" class="logo">
-          </div>
-          
-          <div class="sidebar-info">
-            <span class="badge-access">Acesso Restrito</span>
-            <p><strong>Portal Corporativo</strong><br>Equipe Comercial & Gestão</p>
-          </div>
-        </aside>
-      
-        <main class="content">
-          <div class="header-tag">Plataforma Interna</div>
-          <h1 class="header-title">Central de Sistemas Comerciais</h1>
-          <p class="header-subtitle">Selecione abaixo a ferramenta que deseja acessar:</p>
-      
-          <div class="links-grid">
-      
+    <div class="links-grid">
       <!-- Cartão 1: Funil de Captação -->
       <a href="https://decoletreinamento.github.io/decole_catalogo/" target="_blank" class="card-link">
         <h3>Catálogo de cursos</h3>
         <p>Conheça nossos cursos: duração, módulos, nível e público-alvo. Encontre a formação ideal para o seu futuro profissional.</p>
       </a>
-
 
       <!-- Cartão 2: Tabela de Preços -->
       <a href="https://docs.google.com/spreadsheets/d/1SG0YlEHzrr2WljstXPX40JaHfuR9jXNX/edit?usp=drive_link&ouid=109116797368632304688&rtpof=true&sd=true" target="_blank" class="card-link">
@@ -226,9 +226,19 @@
         <h3>📚 Materiais de Apoio</h3>
         <p>Roteiros de atendimento, tabelas promocionais e apresentações institucionais.</p>
       </a>
-
     </div>
   </main>
 
+  <!-- AQUI ESTÁ O SCRIPT PARA REGISTRAR O SERVICE WORKER (Também obrigatório para PWA) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function() {
+        navigator.serviceWorker
+          .register("./sw.js")
+          .then(res => console.log("Service worker registrado com sucesso."))
+          .catch(err => console.log("Erro ao registrar service worker", err));
+      });
+    }
+  </script>
 </body>
 </html>

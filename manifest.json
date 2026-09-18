@@ -9,13 +9,8 @@
     "icons": [
       {
         "src": "fundo.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "fundo.png",
-        "sizes": "512x512",
-        "type": "image/png"
+        "sizes": "900x900",
+        "type": "image/jpeg"
       }
     ]
   }
