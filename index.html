@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Comercial - Decole</title>
+  <style>
+    :root {
+      --blue: #071d3a;
+      --blue-2: #0d2f5e;
+      --red: #d71920;
+      --red-dark: #a80f16;
+      --white: #ffffff;
+      --off: #f4f7fc;
+      --text: #172033;
+      --muted: #667085;
+      --line: #e2e8f0;
+      --shadow: 0 12px 35px rgba(7, 29, 58, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--off);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Barra Lateral em Azul Corporativo */
+    .sidebar {
+      width: 290px;
+      background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
+      color: var(--white);
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 4px 0 25px rgba(7, 29, 58, 0.15);
+      position: relative;
+    }
+
+    .logo-container {
+      
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 35px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 160px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .sidebar-info {
+      text-align: center;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding-top: 25px;
+    }
+
+    .badge-access {
+      display: inline-block;
+      background: rgba(215, 25, 32, 0.25);
+      color: #ff8a8e;
+      border: 1px solid rgba(215, 25, 32, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .sidebar p {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    /* Área Principal */
+    .content {
+      flex: 1;
+      padding: 50px 45px;
+    }
+
+    .header-tag {
+      color: var(--red);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .header-title {
+      font-size: 32px;
+      color: var(--blue);
+      margin-bottom: 8px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .header-subtitle {
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    /* Grelha de Links */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 28px;
+    }
+
+    /* Cartões Clicáveis */
+    .card-link {
+      background-color: var(--white);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--red);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .card-link::after {
+      content: "Acessar →";
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue-2);
+      margin-top: 8px;
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+
+    .card-link:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(7, 29, 58, 0.14);
+      border-color: var(--line);
+      border-left-color: var(--blue-2);
+    }
+
+    .card-link:hover::after {
+      color: var(--red);
+      transform: translateX(4px);
+    }
+
+    .card-link h3 {
+      font-size: 19px;
+      color: var(--blue);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-link p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+    <body>
+
+        <aside class="sidebar">
+          <div class="logo-container">
+            <img src="logo1.png" alt="Decole Treinamento Profissional" class="logo">
+          </div>
+          
+          <div class="sidebar-info">
+            <span class="badge-access">Acesso Restrito</span>
+            <p><strong>Portal Corporativo</strong><br>Equipe Comercial & Gestão</p>
+          </div>
+        </aside>
+      
+        <main class="content">
+          <div class="header-tag">Plataforma Interna</div>
+          <h1 class="header-title">Central de Sistemas Comerciais</h1>
+          <p class="header-subtitle">Selecione abaixo a ferramenta que deseja acessar:</p>
+      
+          <div class="links-grid">
+      
+      <!-- Cartão 1: Funil de Captação -->
+      <a href="https://decoletreinamento.github.io/decole_catalogo/" target="_blank" class="card-link">
+        <h3>Catálogo de cursos</h3>
+        <p>Conheça nossos cursos: duração, módulos, nível e público-alvo. Encontre a formação ideal para o seu futuro profissional.</p>
+      </a>
+
+
+      <!-- Cartão 2: Tabela de Preços -->
+      <a href="https://docs.google.com/spreadsheets/d/1SG0YlEHzrr2WljstXPX40JaHfuR9jXNX/edit?usp=drive_link&ouid=109116797368632304688&rtpof=true&sd=true" target="_blank" class="card-link">
+        <h3>💰 Tabela de Preços</h3>
+        <p>Consulta rápida de valores de cursos, condições de pagamento e regras de desconto.</p>
+      </a>
+
+      <!-- Cartão 3: Controle de Metas -->
+      <a href="#" target="_blank" class="card-link">
+        <h3>📈 Controle de Metas</h3>
+        <p>Acompanhamento de matrículas efetuadas e indicadores de desempenho da equipe.</p>
+      </a>
+
+      <!-- Cartão 4: Materiais de Apoio -->
+      <a href="https://docs.google.com/document/d/1BzYD5qvA85a3ML4QODVSpsXL9r4xwBmk/edit?usp=drive_link&ouid=109116797368632304688&rtpof=true&sd=true" target="_blank" class="card-link">
+        <h3>📚 Materiais de Apoio</h3>
+        <p>Roteiros de atendimento, tabelas promocionais e apresentações institucionais.</p>
+      </a>
+
+    </div>
+  </main>
+
+</body>
+</html>
