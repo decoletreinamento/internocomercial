@@ -2,10 +2,9 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Portal Comercial - Decole</title>
   
-  <!-- Link para o Manifest e suporte PWA -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#071d3a">
   <link rel="apple-touch-icon" href="icon-512.png">
@@ -37,9 +36,9 @@
       color: var(--text);
       display: flex;
       min-height: 100vh;
+      width: 100%;
     }
 
-    /* Barra Lateral em Azul Corporativo */
     .sidebar {
       width: 290px;
       background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
@@ -49,7 +48,7 @@
       flex-direction: column;
       align-items: center;
       box-shadow: 4px 0 25px rgba(7, 29, 58, 0.15);
-      position: relative;
+      flex-shrink: 0;
     }
 
     .logo-container {
@@ -94,10 +93,10 @@
       line-height: 1.6;
     }
 
-    /* Área Principal */
     .content {
       flex: 1;
       padding: 50px 45px;
+      width: 100%;
     }
 
     .header-tag {
@@ -123,14 +122,12 @@
       font-size: 15px;
     }
 
-    /* Grelha de Links */
     .links-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 28px;
     }
 
-    /* Cartões Clicáveis */
     .card-link {
       background-color: var(--white);
       border-radius: var(--radius);
@@ -144,7 +141,6 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      position: relative;
     }
 
     .card-link::after {
@@ -153,29 +149,12 @@
       font-weight: 700;
       color: var(--blue-2);
       margin-top: 8px;
-      transition: color 0.2s ease, transform 0.2s ease;
-      display: inline-block;
-    }
-
-    .card-link:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(7, 29, 58, 0.14);
-      border-color: var(--line);
-      border-left-color: var(--blue-2);
-    }
-
-    .card-link:hover::after {
-      color: var(--red);
-      transform: translateX(4px);
     }
 
     .card-link h3 {
       font-size: 19px;
       color: var(--blue);
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     .card-link p {
@@ -184,51 +163,60 @@
       line-height: 1.5;
     }
 
-    /* REGRAS DE RESPONSIVIDADE PARA CELULAR */
-    @media (max-width: 768px) {
+    /* --- REGRAS ESPECÍFICAS PARA CELULAR --- */
+    @media screen and (max-width: 768px) {
       body {
-        flex-direction: column;
+        flex-direction: column !important;
       }
 
       .sidebar {
-        width: 100%;
-        padding: 24px 20px;
-        box-shadow: 0 4px 15px rgba(7, 29, 58, 0.12);
+        width: 100% !important;
+        padding: 24px 16px !important;
+        box-shadow: 0 4px 15px rgba(7, 29, 58, 0.15) !important;
       }
 
       .logo-container {
-        margin-bottom: 16px;
-        padding: 0;
+        margin-bottom: 12px !important;
+        padding: 0 !important;
       }
 
       .logo {
-        max-width: 130px;
+        max-width: 120px !important;
       }
 
       .sidebar-info {
-        padding-top: 16px;
+        padding-top: 12px !important;
+      }
+
+      .badge-access {
+        font-size: 10px !important;
+        margin-bottom: 4px !important;
+      }
+
+      .sidebar p {
+        font-size: 12px !important;
       }
 
       .content {
-        padding: 28px 20px;
+        padding: 24px 16px !important;
       }
 
       .header-title {
-        font-size: 24px;
+        font-size: 22px !important;
       }
 
       .header-subtitle {
-        margin-bottom: 24px;
-        font-size: 14px;
+        font-size: 14px !important;
+        margin-bottom: 24px !important;
       }
 
       .links-grid {
-        grid-template-columns: 1fr;
-        gap: 18px;
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
       }
 
       .card-link {
-        padding: 20px;
+        padding: 20px !important;
       }
     }
   </style>
@@ -251,28 +239,24 @@
     <p class="header-subtitle">Selecione abaixo a ferramenta que deseja acessar:</p>
 
     <div class="links-grid">
-      <!-- Cartão 1: Funil de Captação -->
       <a href="https://decoletreinamento.github.io/decole_catalogo/" target="_blank" class="card-link">
         <h3>Catálogo de cursos</h3>
-        <p>Conheça nossos cursos: duração, módulos, nível e público-alvo. Encontre a formação ideal para o seu futuro profissional.</p>
+        <p>Conheça nossos cursos: duração, módulos, nível e público-alvo.</p>
       </a>
 
-      <!-- Cartão 2: Tabela de Preços -->
-      <a href="https://docs.google.com/spreadsheets/d/1SG0YlEHzrr2WljstXPX40JaHfuR9jXNX/edit?usp=drive_link&ouid=109116797368632304688&rtpof=true&sd=true" target="_blank" class="card-link">
+      <a href="https://docs.google.com/spreadsheets/d/1SG0YlEHzrr2WljstXPX40JaHfuR9jXNX/edit?usp=drive_link" target="_blank" class="card-link">
         <h3>💰 Tabela de Preços</h3>
-        <p>Consulta rápida de valores de cursos, condições de pagamento e regras de desconto.</p>
+        <p>Consulta rápida de valores de cursos e condições de pagamento.</p>
       </a>
 
-      <!-- Cartão 3: Controle de Metas -->
       <a href="#" target="_blank" class="card-link">
         <h3>📈 Controle de Metas</h3>
-        <p>Acompanhamento de matrículas efetuadas e indicadores de desempenho da equipe.</p>
+        <p>Acompanhamento de matrículas efetuadas e indicadores.</p>
       </a>
 
-      <!-- Cartão 4: Materiais de Apoio -->
-      <a href="https://docs.google.com/document/d/1BzYD5qvA85a3ML4QODVSpsXL9r4xwBmk/edit?usp=drive_link&ouid=109116797368632304688&rtpof=true&sd=true" target="_blank" class="card-link">
+      <a href="https://docs.google.com/document/d/1BzYD5qvA85a3ML4QODVSpsXL9r4xwBmk/edit?usp=drive_link" target="_blank" class="card-link">
         <h3>📚 Materiais de Apoio</h3>
-        <p>Roteiros de atendimento, tabelas promocionais e apresentações institucionais.</p>
+        <p>Roteiros de atendimento, tabelas promocionais e apresentações.</p>
       </a>
     </div>
   </main>
@@ -282,8 +266,8 @@
       window.addEventListener("load", function() {
         navigator.serviceWorker
           .register("./sw.js", { scope: "./" })
-          .then(res => console.log("Service worker registrado com sucesso."))
-          .catch(err => console.log("Erro ao registrar service worker", err));
+          .then(res => console.log("SW registrado"))
+          .catch(err => console.log("Erro SW:", err));
       });
     }
   </script>

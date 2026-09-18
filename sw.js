@@ -1,21 +1,18 @@
-const CACHE_NAME = 'decole-portal-v1';
+const CACHE_NAME = 'decole-portal-v2'; // Mudar para v2 força o download do novo layout
 const assetsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './fundo.png'
+  './icon-512.png'
 ];
 
-// Instalação do Service Worker e gravação em cache
 self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Força a atualização imediata
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(assetsToCache);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(assetsToCache))
   );
 });
 
-// Ativação do Service Worker
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -26,7 +23,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Interceção de pedidos de rede para permitir funcionamento offline
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
