@@ -2,12 +2,13 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Portal Comercial - Decole</title>
   
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#071d3a">
-  <link rel="apple-touch-icon" href="icon-512.png">
+  <link rel="apple-touch-icon" href="fundo.png">
+  <link rel="icon" type="image/png" href="fundo.png">
 
   <style>
     :root {
@@ -31,46 +32,123 @@
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
+    html {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
+      width: 100%;
+      max-width: 100%;
       background-color: var(--off);
       color: var(--text);
       display: flex;
+      flex-direction: column;
       min-height: 100vh;
+    }
+
+    /* =========================================================
+       CABEÇALHO + MENU (fixo no topo, Desktop e Mobile)
+       ========================================================= */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-2) 100%);
+      color: var(--white);
+      padding: 14px 40px;
+      padding-top: calc(14px + env(safe-area-inset-top));
+      padding-left: max(40px, env(safe-area-inset-left));
+      padding-right: max(40px, env(safe-area-inset-right));
+      box-shadow: 0 4px 20px rgba(7, 29, 58, 0.12);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
       width: 100%;
     }
 
-    .sidebar {
-      width: 290px;
-      background: linear-gradient(180deg, var(--blue) 0%, var(--blue-2) 100%);
-      color: var(--white);
-      padding: 40px 24px;
+    .logo-link {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 4px 0 25px rgba(7, 29, 58, 0.15);
       flex-shrink: 0;
     }
 
-    .logo-container {
-      padding: 16px 20px;
-      border-radius: 12px;
-      margin-bottom: 35px;
-      width: 100%;
-      text-align: center;
-    }
-
     .logo {
-      max-width: 160px;
+      max-width: 150px;
       height: auto;
       display: block;
-      margin: 0 auto;
     }
 
-    .sidebar-info {
-      text-align: center;
-      width: 100%;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-      padding-top: 25px;
+    /* Menu de navegação (desktop: horizontal, centralizado) */
+    .main-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-link {
+      position: relative;
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 4px;
+      height: 2px;
+      background: var(--red);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link:focus-visible,
+    .nav-toggle:focus-visible {
+      outline: 2px solid var(--white);
+      outline-offset: 2px;
+    }
+
+    .nav-extra {
+      display: none; /* só aparece dentro do menu no celular */
+    }
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
     }
 
     .badge-access {
@@ -78,25 +156,79 @@
       background: rgba(215, 25, 32, 0.25);
       color: #ff8a8e;
       border: 1px solid rgba(215, 25, 32, 0.4);
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      white-space: nowrap;
     }
 
-    .sidebar p {
+    .header-info p {
       font-size: 13px;
       color: #cbd5e1;
-      line-height: 1.6;
+      text-align: right;
     }
 
+    /* Botão hambúrguer (só aparece no celular) */
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin-left: auto;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      color: var(--white);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-toggle .bars {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-toggle .bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Fundo escurecido atrás do menu aberto (celular) */
+    .nav-backdrop {
+      display: none;
+    }
+
+    /* =========================================================
+       CONTEÚDO PRINCIPAL
+       ========================================================= */
     .content {
-      flex: 1;
-      padding: 50px 45px;
+      max-width: 1200px;
       width: 100%;
+      margin: 0 auto;
+      padding: 40px 24px;
+      flex: 1;
     }
 
     .header-tag {
@@ -118,14 +250,14 @@
 
     .header-subtitle {
       color: var(--muted);
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       font-size: 15px;
     }
 
     .links-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
     }
 
     .card-link {
@@ -137,7 +269,7 @@
       box-shadow: var(--shadow);
       border: 1px solid var(--line);
       border-left: 5px solid var(--red);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -149,6 +281,11 @@
       font-weight: 700;
       color: var(--blue-2);
       margin-top: 8px;
+    }
+
+    .card-link:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px rgba(7, 29, 58, 0.12);
     }
 
     .card-link h3 {
@@ -163,76 +300,216 @@
       line-height: 1.5;
     }
 
-    /* --- REGRAS ESPECÍFICAS PARA CELULAR --- */
+    /* =========================================================
+       TABLET / TELAS MÉDIAS: menu horizontal mais compacto
+       ========================================================= */
+    @media screen and (max-width: 1100px) {
+      .top-header {
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
+      }
+
+      .header-container {
+        gap: 16px;
+      }
+
+      .header-info p {
+        display: none;
+      }
+
+      .nav-link {
+        padding: 10px 12px;
+      }
+
+      .nav-link::after {
+        left: 12px;
+        right: 12px;
+      }
+    }
+
+    /* =========================================================
+       CELULAR: menu vira hambúrguer com painel abaixo do topo
+       ========================================================= */
     @media screen and (max-width: 768px) {
-      body {
-        flex-direction: column !important;
-      }
-
-      .sidebar {
-        width: 100% !important;
-        padding: 24px 16px !important;
-        box-shadow: 0 4px 15px rgba(7, 29, 58, 0.15) !important;
-      }
-
-      .logo-container {
-        margin-bottom: 12px !important;
-        padding: 0 !important;
+      .top-header {
+        padding: 12px 20px;
+        padding-top: calc(12px + env(safe-area-inset-top));
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
       }
 
       .logo {
-        max-width: 120px !important;
+        max-width: 110px;
       }
 
-      .sidebar-info {
-        padding-top: 12px !important;
+      .header-info {
+        display: none;
       }
 
-      .badge-access {
-        font-size: 10px !important;
-        margin-bottom: 4px !important;
+      .nav-toggle {
+        display: inline-flex;
       }
 
-      .sidebar p {
-        font-size: 12px !important;
+      .main-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: block;
+        padding: 8px 20px 20px;
+        background: var(--blue-2);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 24px 32px rgba(7, 29, 58, 0.3);
+        max-height: calc(100vh - 70px);
+        max-height: calc(100dvh - 70px);
+        overflow-y: auto;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+      }
+
+      .main-nav.open {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition-delay: 0s;
+      }
+
+      .nav-list {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .nav-link {
+        padding: 14px 14px;
+        font-size: 16px;
+        color: #e2e8f0;
+        border-left: 3px solid transparent;
+      }
+
+      .nav-link::after {
+        display: none;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible,
+      .nav-link:active {
+        border-left-color: var(--red);
+      }
+
+      .nav-extra {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 12px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .nav-extra p {
+        font-size: 12px;
+        line-height: 1.4;
+        color: #cbd5e1;
+      }
+
+      .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        background: rgba(7, 29, 58, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+      }
+
+      .nav-backdrop.show {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
       }
 
       .content {
-        padding: 24px 16px !important;
+        padding: 24px 16px;
       }
 
       .header-title {
-        font-size: 22px !important;
+        font-size: 22px;
       }
 
       .header-subtitle {
-        font-size: 14px !important;
-        margin-bottom: 24px !important;
+        font-size: 14px;
+        margin-bottom: 24px;
       }
 
       .links-grid {
-        grid-template-columns: 1fr !important;
-        gap: 16px !important;
+        grid-template-columns: 1fr;
+        gap: 16px;
       }
 
       .card-link {
-        padding: 20px !important;
+        padding: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .main-nav,
+      .nav-backdrop,
+      .nav-toggle .bar,
+      .nav-link,
+      .nav-link::after {
+        transition: none;
       }
     }
   </style>
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="logo-container">
-      <img src="logo1.png" alt="Decole Treinamento Profissional" class="logo">
-    </div>
-    
-    <div class="sidebar-info">
-      <span class="badge-access">Acesso Restrito</span>
-      <p><strong>Portal Corporativo</strong><br>Equipe Comercial & Gestão</p>
-    </div>
-  </aside>
 
+  <!-- CABEÇALHO SUPERIOR COM MENU -->
+  <header class="top-header" id="topHeader">
+    <div class="header-container">
+      <a href="./" class="logo-link" aria-label="Decole - Início">
+        <img src="logo1.png" alt="Decole Treinamento Profissional" class="logo">
+      </a>
+
+      <!-- MENU PRINCIPAL -->
+      <nav class="main-nav" id="mainNav" aria-label="Menu principal">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="https://decoletreinamento.github.io/decole_catalogo/" target="_blank" rel="noopener">Catálogo</a></li>
+          <li><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1SG0YlEHzrr2WljstXPX40JaHfuR9jXNX/edit?usp=drive_link" target="_blank" rel="noopener">Preços</a></li>
+          <li><a class="nav-link" href="#">Metas</a></li>
+          <li><a class="nav-link" href="https://docs.google.com/document/d/1BzYD5qvA85a3ML4QODVSpsXL9r4xwBmk/edit?usp=drive_link" target="_blank" rel="noopener">Materiais</a></li>
+        </ul>
+
+        <!-- Aparece só dentro do menu no celular -->
+        <div class="nav-extra">
+          <p><strong>Portal Corporativo</strong><br>Equipe Comercial & Gestão</p>
+          <span class="badge-access">Acesso Restrito</span>
+        </div>
+      </nav>
+
+      <!-- Info à direita (desktop) -->
+      <div class="header-info">
+        <p><strong>Portal Corporativo</strong><br>Equipe Comercial & Gestão</p>
+        <span class="badge-access">Acesso Restrito</span>
+      </div>
+
+      <!-- Botão hambúrguer (celular) -->
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav">
+        <span class="bars" aria-hidden="true">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <!-- ÁREA DE CONTEÚDO -->
   <main class="content">
     <div class="header-tag">Plataforma Interna</div>
     <h1 class="header-title">Central de Sistemas Comerciais</h1>
@@ -240,7 +517,7 @@
 
     <div class="links-grid">
       <a href="https://decoletreinamento.github.io/decole_catalogo/" target="_blank" class="card-link">
-        <h3>Catálogo de cursos</h3>
+        <h3>📘 Catálogo de cursos</h3>
         <p>Conheça nossos cursos: duração, módulos, nível e público-alvo.</p>
       </a>
 
@@ -262,14 +539,42 @@
   </main>
 
   <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function() {
-        navigator.serviceWorker
-          .register("./sw.js", { scope: "./" })
-          .then(res => console.log("SW registrado"))
-          .catch(err => console.log("Erro SW:", err));
+    (function () {
+      var toggle = document.getElementById('navToggle');
+      var nav = document.getElementById('mainNav');
+      var backdrop = document.getElementById('navBackdrop');
+      var mobile = window.matchMedia('(max-width: 768px)');
+
+      function setOpen(open) {
+        nav.classList.toggle('open', open);
+        backdrop.classList.toggle('show', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      }
+
+      toggle.addEventListener('click', function () {
+        setOpen(!nav.classList.contains('open'));
       });
-    }
+
+      // Fecha ao tocar fora do menu ou em qualquer link
+      backdrop.addEventListener('click', function () { setOpen(false); });
+      nav.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setOpen(false);
+      });
+
+      // Fecha com a tecla Esc
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && nav.classList.contains('open')) {
+          setOpen(false);
+          toggle.focus();
+        }
+      });
+
+      // Ao girar o celular / redimensionar para desktop, garante o menu fechado
+      var onChange = function () { setOpen(false); };
+      if (mobile.addEventListener) mobile.addEventListener('change', onChange);
+      else mobile.addListener(onChange);
+    })();
   </script>
 </body>
 </html>
