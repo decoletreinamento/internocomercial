@@ -251,7 +251,7 @@
       transform: translateX(-50%);
       z-index: 120;
       width: max-content;
-      max-width: calc(100% - 32px);
+      max-width: min(520px, calc(100% - 32px));
       padding: 14px 18px;
       background: var(--blue);
       color: var(--white);
@@ -672,29 +672,42 @@
         toast.textContent = msg;
         toast.hidden = false;
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(function () { toast.hidden = true; }, 9000);
+        toastTimer = setTimeout(function () { toast.hidden = true; }, 12000);
       }
       toast.addEventListener('click', function () { toast.hidden = true; });
 
-      // Android, Windows, Mac (Chrome / Edge): o navegador avisa quando dá para instalar
+      // Android, Windows, Mac (Chrome / Edge): o navegador avisa quando dá para instalar com um clique
       window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();
         deferred = e;
-        item.hidden = false;
       });
 
-      // iPhone / iPad: o Safari não tem instalação automática, então mostramos o passo a passo
-      if (isIOS) item.hidden = false;
+      // O botão fica sempre visível enquanto o app não estiver instalado.
+      // Se o navegador não oferecer a instalação automática, o clique mostra o passo a passo.
+      item.hidden = false;
+
+      function passoAPasso() {
+        var ua = navigator.userAgent;
+        if (isIOS) {
+          return 'Para instalar no iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”.';
+        }
+        if (/firefox/i.test(ua) && !/android|mobile/i.test(ua)) {
+          return 'O Firefox não instala sites como aplicativo no computador. Abra este endereço no Chrome ou no Edge para instalar.';
+        }
+        if (/safari/i.test(ua) && !/chrome|chromium|crios|edg|android/i.test(ua)) {
+          return 'No Safari: abra o menu Arquivo e escolha “Adicionar ao Dock”.';
+        }
+        return 'No Chrome ou Edge: clique no ícone de instalar na barra de endereços ou abra o menu ⋮ e escolha “Instalar app”. Se a opção não aparecer, o app já pode estar instalado neste aparelho.';
+      }
 
       btn.addEventListener('click', function () {
         if (deferred) {
           deferred.prompt();
           deferred.userChoice.then(function () {
             deferred = null;
-            item.hidden = true;
           });
-        } else if (isIOS) {
-          showToast('Para instalar no iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”.');
+        } else {
+          showToast(passoAPasso());
         }
       });
 
