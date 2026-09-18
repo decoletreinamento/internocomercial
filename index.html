@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Comercial - Decole</title>
   
-  <!-- AQUI ESTÁ O LINK PARA O MANIFEST (Isso faz o navegador detectar) -->
+  <!-- Link para o Manifest e suporte PWA -->
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#071d3a">
-  <link rel="apple-touch-icon" href="fundo.png">
+  <link rel="apple-touch-icon" href="icon-512.png">
 
   <style>
     :root {
@@ -183,6 +183,54 @@
       color: var(--muted);
       line-height: 1.5;
     }
+
+    /* REGRAS DE RESPONSIVIDADE PARA CELULAR */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 24px 20px;
+        box-shadow: 0 4px 15px rgba(7, 29, 58, 0.12);
+      }
+
+      .logo-container {
+        margin-bottom: 16px;
+        padding: 0;
+      }
+
+      .logo {
+        max-width: 130px;
+      }
+
+      .sidebar-info {
+        padding-top: 16px;
+      }
+
+      .content {
+        padding: 28px 20px;
+      }
+
+      .header-title {
+        font-size: 24px;
+      }
+
+      .header-subtitle {
+        margin-bottom: 24px;
+        font-size: 14px;
+      }
+
+      .links-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .card-link {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -229,12 +277,11 @@
     </div>
   </main>
 
-  <!-- AQUI ESTÁ O SCRIPT PARA REGISTRAR O SERVICE WORKER (Também obrigatório para PWA) -->
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function() {
         navigator.serviceWorker
-          .register("./sw.js")
+          .register("./sw.js", { scope: "./" })
           .then(res => console.log("Service worker registrado com sucesso."))
           .catch(err => console.log("Erro ao registrar service worker", err));
       });
