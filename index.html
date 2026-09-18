@@ -215,6 +215,54 @@
       transform: translateY(-7px) rotate(-45deg);
     }
 
+    /* Botão "Instalar app" (só aparece quando o navegador permite instalar) */
+    [hidden] {
+      display: none !important;
+    }
+
+    .nav-install {
+      margin-left: 8px;
+    }
+
+    .install-btn {
+      width: 100%;
+      border: 0;
+      cursor: pointer;
+      text-align: center;
+      background: var(--red);
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .install-btn::after {
+      display: none;
+    }
+
+    .install-btn:hover,
+    .install-btn:focus-visible {
+      background: var(--red-dark);
+    }
+
+    /* Aviso de como instalar no iPhone */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      z-index: 120;
+      width: max-content;
+      max-width: calc(100% - 32px);
+      padding: 14px 18px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 14px;
+      line-height: 1.4;
+      border-radius: 12px;
+      border-left: 4px solid var(--red);
+      box-shadow: 0 12px 30px rgba(7, 29, 58, 0.3);
+      cursor: pointer;
+    }
+
     /* Fundo escurecido atrás do menu aberto (celular) */
     .nav-backdrop {
       display: none;
@@ -327,6 +375,13 @@
       }
     }
 
+    /* Telas médias (tablet em pé): esconde o selo para caber o botão Instalar app */
+    @media screen and (min-width: 769px) and (max-width: 860px) {
+      .header-info {
+        display: none;
+      }
+    }
+
     /* =========================================================
        CELULAR: menu vira hambúrguer com painel abaixo do topo
        ========================================================= */
@@ -396,6 +451,14 @@
       .nav-link:focus-visible,
       .nav-link:active {
         border-left-color: var(--red);
+      }
+
+      .nav-install {
+        margin: 8px 0 0;
+      }
+
+      .install-btn {
+        border-radius: 10px;
       }
 
       .nav-extra {
@@ -481,6 +544,9 @@
           <li><a class="nav-link" href="https://docs.google.com/spreadsheets/d/1SG0YlEHzrr2WljstXPX40JaHfuR9jXNX/edit?usp=drive_link" target="_blank" rel="noopener">Preços</a></li>
           <li><a class="nav-link" href="#">Metas</a></li>
           <li><a class="nav-link" href="https://docs.google.com/document/d/1BzYD5qvA85a3ML4QODVSpsXL9r4xwBmk/edit?usp=drive_link" target="_blank" rel="noopener">Materiais</a></li>
+          <li class="nav-install" id="installItem" hidden>
+            <button class="nav-link install-btn" id="installBtn" type="button">Instalar app</button>
+          </li>
         </ul>
 
         <!-- Aparece só dentro do menu no celular -->
@@ -508,6 +574,8 @@
   </header>
 
   <div class="nav-backdrop" id="navBackdrop"></div>
+
+  <div class="toast" id="installToast" role="status" hidden></div>
 
   <!-- ÁREA DE CONTEÚDO -->
   <main class="content">
@@ -559,7 +627,7 @@
       // Fecha ao tocar fora do menu ou em qualquer link
       backdrop.addEventListener('click', function () { setOpen(false); });
       nav.addEventListener('click', function (e) {
-        if (e.target.closest('a')) setOpen(false);
+        if (e.target.closest('a, .install-btn')) setOpen(false);
       });
 
       // Fecha com a tecla Esc
@@ -574,6 +642,66 @@
       var onChange = function () { setOpen(false); };
       if (mobile.addEventListener) mobile.addEventListener('change', onChange);
       else mobile.addListener(onChange);
+    })();
+
+    // ===== App instalável (PWA) =====
+    (function () {
+      // Registra o service worker (necessário para instalar; precisa de HTTPS)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('./sw.js').catch(function (err) {
+            console.warn('Service worker não registrado:', err);
+          });
+        });
+      }
+
+      var item = document.getElementById('installItem');
+      var btn = document.getElementById('installBtn');
+      var toast = document.getElementById('installToast');
+      var deferred = null;
+      var toastTimer;
+
+      var jaInstalado = window.matchMedia('(display-mode: standalone)').matches ||
+                        window.navigator.standalone === true;
+      if (jaInstalado) return; // já está rodando como app: não mostra o botão
+
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.hidden = false;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.hidden = true; }, 9000);
+      }
+      toast.addEventListener('click', function () { toast.hidden = true; });
+
+      // Android, Windows, Mac (Chrome / Edge): o navegador avisa quando dá para instalar
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferred = e;
+        item.hidden = false;
+      });
+
+      // iPhone / iPad: o Safari não tem instalação automática, então mostramos o passo a passo
+      if (isIOS) item.hidden = false;
+
+      btn.addEventListener('click', function () {
+        if (deferred) {
+          deferred.prompt();
+          deferred.userChoice.then(function () {
+            deferred = null;
+            item.hidden = true;
+          });
+        } else if (isIOS) {
+          showToast('Para instalar no iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”.');
+        }
+      });
+
+      window.addEventListener('appinstalled', function () {
+        deferred = null;
+        item.hidden = true;
+      });
     })();
   </script>
 </body>

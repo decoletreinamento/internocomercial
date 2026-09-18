@@ -2,7 +2,9 @@
     "name": "Portal Comercial - Decole",
     "short_name": "Portal Decole",
     "description": "Central de Sistemas Comerciais da Decole",
+    "lang": "pt-BR",
     "start_url": "./index.html",
+    "scope": "./",
     "display": "standalone",
     "background_color": "#f4f7fc",
     "theme_color": "#071d3a",
@@ -10,7 +12,8 @@
       {
         "src": "fundo.png",
         "sizes": "900x900",
-        "type": "image/jpeg"
+        "type": "image/png",
+        "purpose": "any"
       }
     ]
   }
